@@ -1,0 +1,44 @@
+<div class="b-input">
+    <div class="sg">
+        <div style="max-height: 350px; display: block; overflow-y: auto;" class="sg-content">
+            <!-- ngRepeat: row in _$input.table -->
+            <div
+                class="sg-row ng-scope b-input-active"
+                ng-repeat="row in _$input.table"
+                ng-mouseover="_$input.rowOnOver($index)"
+                ng-click="_$input.rowOnSelect(row)"
+                ng-class="{'b-input-active': $index == _$input.currentRow}"
+            >
+                <div class="sg-cell col-sm-24 ng-binding">Закупочная Феендо</div>
+            </div>
+            <!-- end ngRepeat: row in _$input.table -->
+            <div
+                class="sg-row ng-scope"
+                ng-repeat="row in _$input.table"
+                ng-mouseover="_$input.rowOnOver($index)"
+                ng-click="_$input.rowOnSelect(row)"
+                ng-class="{'b-input-active': $index == _$input.currentRow}"
+            >
+                <div class="sg-cell col-sm-24 ng-binding">Оптовая Феендо</div>
+            </div>
+            <!-- end ngRepeat: row in _$input.table -->
+            <div
+                class="sg-row ng-scope"
+                ng-repeat="row in _$input.table"
+                ng-mouseover="_$input.rowOnOver($index)"
+                ng-click="_$input.rowOnSelect(row)"
+                ng-class="{'b-input-active': $index == _$input.currentRow}"
+            >
+                <div class="sg-cell col-sm-24 ng-binding">Розничная Феендо</div>
+            </div>
+            <!-- end ngRepeat: row in _$input.table -->
+        </div>
+    </div>
+    <!-- ngIf: !_$input.no_results && _$input.hasMore -->
+    <!-- ngIf: !_$input.no_results && !_$input.hasMore && _$input.maxPage > 1 -->
+    <!-- ngIf: _$input.no_results -->
+    <!-- ngIf: _$input.is_add && !_$input.no_results && _$input.maxPage == 1 -->
+    <!-- ngIf: _$input.is_view -->
+    <!-- ngIf: _$input.is_add && (_$input.no_results || !_$input.no_results && _$input.maxPage > 1) -->
+    <!-- ngIf: _$input.fetching -->
+</div>

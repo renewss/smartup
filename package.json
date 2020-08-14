@@ -1,0 +1,22 @@
+{
+    "name": "auto",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "start:dev": "nodemon app.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-prettier": "^3.1.4",
+        "nodemon": "^2.0.4",
+        "prettier": "2.0.5"
+    },
+    "dependencies": {
+        "dotenv": "^8.2.0",
+        "move-file": "^2.0.0",
+        "puppeteer": "^5.1.0"
+    }
+}
