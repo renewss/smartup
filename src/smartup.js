@@ -40,7 +40,7 @@ class Smartup {
 
     async changeBranch(branch) {
         await this.page.click('li.dropdown-module > a');
-        await this.page.waitFor(1000);
+        await this.page.waitFor(2000);
         await this.page.click(`li.dropdown-module > ul > li:nth-child(${branch})`);
         await this.page.waitFor(2000);
 
@@ -95,7 +95,7 @@ class Smartup {
         await this.page.click(
             'form.form-horizontal > div:nth-child(2) > div:nth-child(5) > div > div > div > div > b-input > div',
         );
-        await this.page.waitFor(200);
+        await this.page.waitFor(400);
         await this.page.click(
             `form.form-horizontal > div:nth-child(2) > div:nth-child(5) > div > div > div > div > b-input > div > div > div > div > div > div:nth-child(${price})`,
         );
