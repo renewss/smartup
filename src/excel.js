@@ -4,18 +4,18 @@ const { timeFormat } = require('./utils');
 const workBook = new xl.Workbook();
 
 class Excel {
-    constructor(root, branch) {
-        this.root = root;
+    constructor(path, branch) {
+        this.path = path;
         this.branch = branch;
+        this.today = timeFormat(new Date());
         this.filenames = ['долги.xlsx', 'склад.xlsx'];
         this.enumBranch = ['null', 'main', 'feendo', 'conti'];
     }
 
     async processDebtors() {
         try {
-            const today = timeFormat(new Date());
-            const file = `${today} ${this.filenames[0]}`;
-            const fullName = `C:\\Users\\FEENDO\\Desktop\\тест\\${this.enumBranch[this.branch]}\\${today}\\${file}`;
+            const file = `${this.today} ${this.filenames[0]}`;
+            const fullName = `${this.path}${this.enumBranch[this.branch]}\\${this.today}\\${file}`;
 
             await workBook.xlsx.readFile(fullName);
             let ws = workBook.getWorksheet(1);
@@ -30,16 +30,34 @@ class Excel {
                     break;
                 }
             }
-
-            console.log('Finished');
         } catch (err) {
             console.log(err);
         }
     }
+
+    async processWarehouse() {
+        const file = `${this.today} ${this.filenames[1]}`;
+        const fullName = `${this.path}${this.enumBranch[this.branch]}\\${this.today}\\${file}`;
+
+        await workBook.xlsx.readFile(fullName);
+        let ws = workBook.getWorksheet(1);
+
+        for (let i = 8; i < Infinity; i++) {
+            const cell = ws.getCell(`A${i}`).model.value;
+
+            if (cell === 'Итого') {
+                ws.getCell(`H${i}`).value = { formula: `SUM(H8:H${i - 1})` };
+
+                await workBook.xlsx.writeFile(fullName);
+                break;
+            } else {
+                ws.getCell(`H${i}`).value = { formula: `PRODUCT(F${i}, G${i})` };
+            }
+        }
+    }
 }
 
-const exl = new Excel('C:\\Users\\FEENDO\\Desktop\\тест\\', 2);
-exl.processDebtors();
+module.exports = Excel;
 
 // (async function () {
 //     await workBook.xlsx.readFile('C:\\Users\\FEENDO\\Desktop\\тест\\feendo\\2020.08.14\\test.xlsx');
