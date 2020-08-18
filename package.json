@@ -18,6 +18,7 @@
         "dotenv": "^8.2.0",
         "exceljs": "^4.1.1",
         "move-file": "^2.0.0",
-        "puppeteer": "^5.1.0"
+        "puppeteer": "^5.1.0",
+        "rfdc": "^1.1.4"
     }
 }

@@ -1,11 +1,11 @@
 const pptr = require('puppeteer');
-const { timeFormat } = require('./utils');
+const Time = require('./utils/time');
 const files = require('./fileSystem');
 
 class Smartup {
     constructor(downloadPath) {
         this.path = downloadPath;
-        this.folder = timeFormat(new Date());
+        this.time = new Time(new Date()); // time used to choose folders as they named according to date
         this.branch = 2;
         this.enumBranch = ['null', 'main', 'feendo', 'conti']; // 'null' for matching browser html count system
         this.fnOld = [
@@ -16,7 +16,7 @@ class Smartup {
         ];
         this.fnNew = ['долги.xlsx', 'склад.xlsx', 'Д.Долг Феендо.xlsx', 'наличка.xlsx'];
     }
-    fullPath(dateFolder = this.folder) {
+    fullPath(dateFolder = this.time.getCurrent()) {
         return `${this.path}${this.enumBranch[this.branch]}\\${dateFolder}\\`;
     }
 
@@ -71,7 +71,10 @@ class Smartup {
         await this.page.click('div.input-group-btn > div:nth-child(5) > ul > li:nth-child(3)');
         await this.page.waitFor(2000);
         // change file location and name
-        await files.rename(`${this.fullPath()}${this.fnOld[0]}`, `${this.fullPath()}${this.folder} ${this.fnNew[0]}`);
+        await files.rename(
+            `${this.fullPath()}${this.fnOld[0]}`,
+            `${this.fullPath()}${this.time.getCurrent()} ${this.fnNew[0]}`,
+        );
     }
 
     async getWarehouse(warehouses, price) {
@@ -105,27 +108,35 @@ class Smartup {
         await this.page.click(`form.form-horizontal > div:nth-child(2) > div:nth-child(9) > div > button:nth-child(3)`);
         await this.page.waitFor(2000);
         // change file location and name
-        await files.rename(`${this.fullPath()}${this.fnOld[1]}`, `${this.fullPath()}${this.folder} ${this.fnNew[1]}`);
+        await files.rename(
+            `${this.fullPath()}${this.fnOld[1]}`,
+            `${this.fullPath()}${this.time.getCurrent()} ${this.fnNew[1]}`,
+        );
     }
 
     async getCredit() {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-
-        files.copy(
-            `${this.fullPath(timeFormat(yesterday))}${timeFormat(yesterday)} ${this.fnOld[2]}`,
-            `${this.fullPath(timeFormat(new Date()))}${this.folder} ${this.fnNew[2]}`,
-        );
+        try {
+            files.copy(
+                `${this.fullPath(this.time.getYesterday())}${this.time.getYesterday()} ${this.fnOld[2]}`,
+                `${this.fullPath(this.time.getCurrent())}${this.time.getCurrent()} ${this.fnNew[2]}`,
+            );
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     async getCash() {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
+        try {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
 
-        files.copy(
-            `${this.fullPath(timeFormat(yesterday))}${timeFormat(yesterday)} ${this.fnOld[3]}`,
-            `${this.fullPath(timeFormat(new Date()))}${this.folder} ${this.fnNew[3]}`,
-        );
+            files.copy(
+                `${this.fullPath(this.time.getYesterday())}${this.time.getYesterday()} ${this.fnOld[3]}`,
+                `${this.fullPath(this.time.getCurrent())}${this.time.getCurrent()} ${this.fnNew[3]}`,
+            );
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
 // TODO copy functions problem with date

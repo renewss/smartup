@@ -9,10 +9,10 @@ async function start() {
 
         const smt = new Smartup(`C:\\Users\\FEENDO\\Desktop\\тест\\`);
         await smt.init();
-        await smt.login();
-        await smt.changeBranch(2);
-        await smt.getDebtors();
-        await smt.getWarehouse([1], 1);
+        // await smt.login();
+        // await smt.changeBranch(2);
+        // await smt.getDebtors();
+        // await smt.getWarehouse([1], 1);
         await smt.getCredit();
         await smt.getCash();
 
