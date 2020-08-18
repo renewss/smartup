@@ -1,30 +1,41 @@
-const clone = require('rfdc')();
+// const clone = require('rfdc')();
 
 class Time {
     constructor(time = new Date()) {
         this.time = time;
-        this.time.setHours(this.time.getHours() + 5);
+        this.time.setHours(this.time.getHours());
+
+        this.init();
+    }
+    // method to change object time
+    init(offset = 0) {
+        this.time.setDate(this.time.getDate() + offset);
+
+        this.day = this.time.getDay();
+        this.date = this.time.getDate();
+        this.month = this.time.getMonth();
+        this.year = this.time.getFullYear();
+    }
+
+    // return month in "index starting from 1" format
+    getMonthFormat() {
+        return `${this.month + 1}`.length === 1 ? `0${this.month + 1}` : this.month + 1;
+    }
+    getDateFormat() {
+        return `${this.date}`.length === 1 ? `0${this.date}` : this.date;
     }
 
     // returns date in "folder/name" format xxxx.yy.zz
     getCurrent() {
-        const year = 1900 + this.time.getYear(); // getYear function() returns 120 for 2020
-        const month =
-            `${this.time.getMonth() + 1}`.length === 1 ? '0' + `${this.time.getMonth() + 1}` : this.time.getMonth() + 1; // starts from 0
-        const day = `${this.time.getDate()}`.length === 1 ? '0' + `${this.time.getDate()}` : this.time.getDate();
-
-        return `${year}.${month}.${day}`;
+        return `${this.year}.${this.getMonthFormat()}.${this.getDateFormat()}`;
     }
 
-    getYesterday() {
-        const t = clone(this.time);
-        t.setDate(t.getDate() - 1);
+    getTime(offset) {
+        this.init(offset); // changing date to yesterday's
+        const resp = `${this.year}.${this.getMonthFormat()}.${day}`;
+        this.init(-offset); //returning back to today's date
 
-        const year = 1900 + t.getYear(); // getYear function() returns 120 for 2020
-        const month = `${t.getMonth() + 1}`.length === 1 ? '0' + `${t.getMonth() + 1}` : t.getMonth() + 1; // starts from 0
-        const day = `${t.getDate()}`.length === 1 ? '0' + `${t.getDate()}` : t.getDate();
-
-        return `${year}.${month}.${day}`;
+        return resp;
     }
 }
 
